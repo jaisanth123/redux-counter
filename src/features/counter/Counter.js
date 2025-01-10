@@ -1,7 +1,7 @@
-import React from 'react'
+import React,{useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 // secelector is used to get the specfic state from the store
-import { increment,decrement } from './counterSlice'
+import { increment,decrement,reset,incrementByAmount} from './counterSlice'
 const Counter = () => {
 
 const count = useSelector((state)=>state.counter.count)
@@ -10,8 +10,15 @@ const count = useSelector((state)=>state.counter.count)
 
 const dispatch = useDispatch()
 // it is user to use the functions in the counterSlice
+const [incrementAmount , setIncrementAmount] = useState(0)
 
+const addValue = Number(incrementAmount) || 0 ;
+// if the input is number it will be stored or else 0 will be returned
 
+const resetall = () =>{
+  setIncrementAmount(0)
+  dispatch(reset())  // reset the increment
+}
 
 
 
@@ -23,6 +30,16 @@ const dispatch = useDispatch()
             <button onClick={()=>dispatch(increment())}>+</button>
             <button onClick={()=>dispatch(decrement())}>-</button>
         </div>
+        <input type='Number' placeholder='Enter the vlaue'
+         value={incrementAmount} 
+        onChange={(e)=> setIncrementAmount(e.target.value)} />
+
+        <div>
+          <button onClick={() => dispatch(incrementByAmount(addValue))} >Add Amount</button>
+          <button onClick={resetall}>Reset</button>
+        </div>
+
+
     </section>
   )
 }
